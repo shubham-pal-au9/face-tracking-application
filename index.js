@@ -17,8 +17,9 @@ app.post("/rtctoken", (req, res) => {
   const appID = process.env.appIDSecure;
   const appCertificate = process.env.appCertificateSecure;
 
-  const callerIdInitiate = req.body.CallerId;
-  const recieverIdTake = req.body.RecieverId;
+  const callerIdInitiate = req.query.CallerId;
+  const recieverIdTake = req.query.RecieverId;
+  
   const callerID = !callerIdInitiate
     ? res.status(500).json({ error: "CallerId is required" })
     : callerIdInitiate;
