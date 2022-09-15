@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3000;
 
-// End point for RTC token
+// End point for RTC token 
 
 app.get("/", (req, res) => {
   res.send("Test API");
