@@ -2,10 +2,20 @@ const express = require("express");
 const auth = require("./middleware/auth");
 const Agora = require("agora-access-token");
 const app = express();
-app.use(express.json());
 require("dotenv").config();
+var multer = require('multer');
+var upload = multer();
 
 const port = process.env.PORT || 3000;
+// for parsing application/json
+app.use(express.json()); 
+
+// for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true })); 
+
+// for parsing multipart/form-data
+app.use(upload.array()); 
+app.use(express.static('public'));
 
 // End point for RTC token 
 
@@ -17,8 +27,8 @@ app.post("/rtctoken", (req, res) => {
   const appID = process.env.appIDSecure;
   const appCertificate = process.env.appCertificateSecure;
 
-  const callerIdInitiate = req.query.CallerId;
-  const recieverIdTake = req.query.RecieverId;
+  const callerIdInitiate = req.body.CallerId;
+  const recieverIdTake = req.body.RecieverId;
   
   const callerID = !callerIdInitiate
     ? res.status(500).json({ error: "CallerId is required" })
