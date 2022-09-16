@@ -50,21 +50,23 @@ app.post("/rtctoken", (req, res) => {
 
   let channel = finalRes.replace(/,/g, "");
 
-  let channelData = channel.toString();
-
+  let channelName = channel.toString();
+ 
   const expirationTimeInSeconds = 3600;
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const expirationTimestamp = currentTimestamp + expirationTimeInSeconds;
+  const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+  const uid = Math.floor(Math.random() * 100000);
+  const role = Agora.RtcRole.PUBLISHER;
   const token = Agora.RtcTokenBuilder.buildTokenWithUid(
     appID,
     appCertificate,
-    channelData,
-    callerID,
-    recieverId,
-    expirationTimestamp
+    channelName,
+    uid,
+    role,
+    privilegeExpiredTs
   );
 
-  res.send({ ChannelName: channelData, AccessToken: token });
+res.send({ AgoraUid:uid,ChannelName: channelName, AccessToken: token });
 });
 
 app.listen(port, () =>
